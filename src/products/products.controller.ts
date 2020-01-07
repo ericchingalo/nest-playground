@@ -1,4 +1,12 @@
-import { Controller, Get, Param, Post, Body, Put } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  Post,
+  Body,
+  Put,
+  Delete,
+} from '@nestjs/common';
 import { ProductDto } from './products.dto';
 
 @Controller('products')
@@ -14,12 +22,17 @@ export class ProductsController {
   }
 
   @Post()
-  create(@Body() productDto: ProductDto): string {
+  createProduct(@Body() productDto: ProductDto): string {
     return `created product with id ${productDto.id}`;
   }
 
   @Put()
-  update(@Body() productDto: ProductDto): string {
+  updateProduct(@Body() productDto: ProductDto): string {
     return `created product with id ${productDto.id}`;
+  }
+
+  @Delete('id')
+  deleteProduct(@Param('id') id): string {
+    return `deleted product with ${id} id`;
   }
 }
