@@ -23,26 +23,17 @@ export class ProductsService {
   }
 
   updateProduct(productId: number, productUpdate: Product): Product {
-    const index = _.findIndex(
-      this.products,
-      (prod: Product) => prod.id === productId,
-    );
-
+    const index = this.getProductIndex(productId);
     let updatedProduct = this.products[index];
 
-    if (!updatedProduct) {
-      throw new NotFoundException('Product Not found');
-    }
     if (productUpdate.name) {
       updatedProduct = { ...updatedProduct, name: productUpdate.name };
     }
-
     if (productUpdate.price) {
       updatedProduct = { ...updatedProduct, price: productUpdate.price };
     }
 
     this.products[index] = updatedProduct;
-
     return updatedProduct;
   }
 
@@ -51,17 +42,21 @@ export class ProductsService {
   }
 
   findProduct(id: number): Product {
-    // const foundProduct = _.find(
-    //   this.products,
-    //   (product: Product) => product.id === id,
-    // );
+    const index = this.getProductIndex(id);
+    return this.products[index];
+  }
 
-    const foundProduct = this.products.find(prod => prod.id === id);
+  getProductIndex(id: number): number {
+    const productIndex = _.findIndex(
+      this.products,
+      (prod: Product) => prod.id === id,
+    );
 
-    if (!foundProduct) {
-      throw new NotFoundException(`Product with id ${id} not found`);
+    if (productIndex !== -1) {
+      return productIndex;
     }
-    return foundProduct;
+
+    throw new NotFoundException(`product with id ${id} not found`);
   }
 
   getId(): number {
