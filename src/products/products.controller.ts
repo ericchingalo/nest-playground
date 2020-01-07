@@ -23,7 +23,7 @@ export class ProductsController {
 
   @Post()
   createProduct(@Body() productDto: CreateProductDto): string {
-    return `created product with id ${productDto.id}`;
+    return `created product with id ${productDto.name}`;
   }
 
   @Put(':id')
