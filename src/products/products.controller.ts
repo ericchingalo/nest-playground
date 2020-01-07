@@ -26,13 +26,16 @@ export class ProductsController {
     return `created product with id ${productDto.id}`;
   }
 
-  @Put()
-  updateProduct(@Body() productDto: UpdateProductDto): string {
+  @Put(':id')
+  updateProduct(
+    @Param('id') id: string,
+    @Body() productDto: UpdateProductDto,
+  ): string {
     return `created product with id ${productDto.name}`;
   }
 
-  @Delete('id')
-  deleteProduct(@Param('id') id): string {
+  @Delete(':id')
+  deleteProduct(@Param('id') id: string): string {
     return `deleted product with ${id} id`;
   }
 }
