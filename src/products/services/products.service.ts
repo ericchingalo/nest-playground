@@ -7,12 +7,14 @@ export class ProductsService {
   private readonly products: Product[] = [];
 
   createProduct(product: Product): Product {
-    const createdProduct: Product = {
-      ...product,
-      id: this.getId(),
-    };
-    this.products.push(createdProduct);
-    return createdProduct;
+    if (product) {
+      const createdProduct: Product = {
+        ...product,
+        id: this.getId(),
+      };
+      this.products.push(createdProduct);
+      return createdProduct;
+    }
   }
 
   deleteProduct(id: number): number {
@@ -44,6 +46,6 @@ export class ProductsService {
   }
 
   getId(): number {
-    return this.products.length;
+    return this.products.length + 1;
   }
 }

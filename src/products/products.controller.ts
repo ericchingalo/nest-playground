@@ -8,34 +8,38 @@ import {
   Delete,
 } from '@nestjs/common';
 import { CreateProductDto, UpdateProductDto } from './dto/';
+import { ProductsService } from './services/products.service';
+import { Product } from './interfaces/products.interface';
 
 @Controller('products')
 export class ProductsController {
+  constructor(private readonly productsService: ProductsService) {}
+
   @Get()
-  findAllProducts(): string {
-    return 'this returns all products';
+  findAllProducts(): Product[] {
+    return this.productsService.findAllProducts();
   }
 
   @Get(':id')
-  findProductById(@Param('id') id: number): string {
-    return `this returns a product with ${id} id`;
+  findProductById(@Param('id') id: number): Product {
+    return this.productsService.findProduct(id);
   }
 
   @Post()
-  createProduct(@Body() productDto: CreateProductDto): string {
-    return `created product with id ${productDto.name}`;
+  createProduct(@Body() productDto: CreateProductDto): Product {
+    return this.productsService.createProduct(productDto);
   }
 
   @Put(':id')
   updateProduct(
-    @Param('id') id: string,
+    @Param('id') id: number,
     @Body() productDto: UpdateProductDto,
-  ): string {
-    return `created product with id ${productDto.name}`;
+  ): Product {
+    return this.productsService.updateProduct(id, productDto);
   }
 
   @Delete(':id')
-  deleteProduct(@Param('id') id: string): string {
-    return `deleted product with ${id} id`;
+  deleteProduct(@Param('id') id: number): number {
+    return this.productsService.deleteProduct(id);
   }
 }
