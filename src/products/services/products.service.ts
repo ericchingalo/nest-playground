@@ -23,16 +23,25 @@ export class ProductsService {
   }
 
   updateProduct(productId: number, productUpdate: Product): Product {
-    const updatedProduct = {
-      ...productUpdate,
-      id: productId,
-    };
+    const index = _.findIndex(
+      this.products,
+      (prod: Product) => prod.id === productId,
+    );
 
-    _.forEach(this.products, (product: Product) => {
-      if (product.id === productId) {
-        product = updatedProduct;
-      }
-    });
+    let updatedProduct = this.products[index];
+
+    if (!updatedProduct) {
+      throw new NotFoundException('Product Not found');
+    }
+    if (productUpdate.name) {
+      updatedProduct = { ...updatedProduct, name: productUpdate.name };
+    }
+
+    if (productUpdate.price) {
+      updatedProduct = { ...updatedProduct, price: productUpdate.price };
+    }
+
+    this.products[index] = updatedProduct;
 
     return updatedProduct;
   }
@@ -47,7 +56,7 @@ export class ProductsService {
     //   (product: Product) => product.id === id,
     // );
 
-    const foundProduct = this.products.find(prod => prod.id == id);
+    const foundProduct = this.products.find(prod => prod.id === id);
 
     if (!foundProduct) {
       throw new NotFoundException(`Product with id ${id} not found`);
