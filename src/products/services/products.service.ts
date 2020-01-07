@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import * as _ from 'lodash';
 import { Product } from '../interfaces/products.interface';
 
@@ -42,7 +42,17 @@ export class ProductsService {
   }
 
   findProduct(id: number): Product {
-    return _.find(this.products, (product: Product) => product.id === id);
+    // const foundProduct = _.find(
+    //   this.products,
+    //   (product: Product) => product.id === id,
+    // );
+
+    const foundProduct = this.products.find(prod => prod.id == id);
+
+    if (!foundProduct) {
+      throw new NotFoundException(`Product with id ${id} not found`);
+    }
+    return foundProduct;
   }
 
   getId(): number {
