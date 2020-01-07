@@ -22,7 +22,7 @@ export class ProductsController {
 
   @Get(':id')
   findProductById(@Param('id') id: number): Product {
-    return this.productsService.findProduct(id);
+    return this.productsService.findProduct(Number(id));
   }
 
   @Post()
@@ -35,11 +35,11 @@ export class ProductsController {
     @Param('id') id: number,
     @Body() productDto: UpdateProductDto,
   ): Product {
-    return this.productsService.updateProduct(id, productDto);
+    return this.productsService.updateProduct(Number(id), productDto);
   }
 
   @Delete(':id')
   deleteProduct(@Param('id') id: number): number {
-    return this.productsService.deleteProduct(id);
+    return this.productsService.deleteProduct(Number(id));
   }
 }
