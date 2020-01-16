@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
 import * as _ from 'lodash';
 import { Product } from '../interfaces/products.interface';
 
@@ -56,7 +61,11 @@ export class ProductsService {
       return productIndex;
     }
 
-    throw new NotFoundException(`product with id ${id} not found`);
+    // throw new NotFoundException(`product with id ${id} not found`);
+    throw new HttpException(
+      `product with id ${id} not found`,
+      HttpStatus.NOT_FOUND,
+    );
   }
 
   getId(): number {
