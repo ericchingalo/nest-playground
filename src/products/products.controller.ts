@@ -6,10 +6,12 @@ import {
   Body,
   Put,
   Delete,
+  UseFilters,
 } from '@nestjs/common';
 import { CreateProductDto, UpdateProductDto } from './dto/';
 import { ProductsService } from './services/products.service';
 import { Product } from './interfaces/products.interface';
+import { HttpExceptionFilter } from 'src/core/filters/http-exception.filters';
 
 @Controller('products')
 export class ProductsController {
@@ -21,6 +23,7 @@ export class ProductsController {
   }
 
   @Get(':id')
+  @UseFilters(HttpExceptionFilter)
   findProductById(@Param('id') id: number): Product {
     return this.productsService.findProduct(Number(id));
   }
@@ -31,6 +34,7 @@ export class ProductsController {
   }
 
   @Put(':id')
+  @UseFilters(HttpExceptionFilter)
   updateProduct(
     @Param('id') id: number,
     @Body() productDto: UpdateProductDto,
