@@ -14,6 +14,7 @@ import { ProductsService } from './services/products.service';
 import { Product } from './interfaces/products.interface';
 import { HttpExceptionFilter } from 'src/core/filters/http-exception.filters';
 import { JoiValidation } from '../core/pipes/joiValidation.pipe';
+import { ValidationPipe } from 'src/core/pipes/validation.pipe';
 
 @Controller('products')
 @UseFilters(new HttpExceptionFilter())
@@ -31,8 +32,9 @@ export class ProductsController {
   }
 
   @Post()
-  @UsePipes(new JoiValidation(CreateProductDto))
-  createProduct(@Body() productDto: CreateProductDto): Product {
+  createProduct(
+    @Body(new ValidationPipe()) productDto: CreateProductDto,
+  ): Product {
     return this.productsService.createProduct(productDto);
   }
 

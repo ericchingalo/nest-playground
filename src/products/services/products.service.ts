@@ -9,7 +9,7 @@ import { Product } from '../interfaces/products.interface';
 
 @Injectable()
 export class ProductsService {
-  private readonly products: Product[] = [];
+  private products: Product[] = [];
 
   createProduct(product: Product): Product {
     if (product) {
