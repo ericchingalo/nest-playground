@@ -7,11 +7,13 @@ import {
   Put,
   Delete,
   UseFilters,
+  UsePipes,
 } from '@nestjs/common';
 import { CreateProductDto, UpdateProductDto } from './dto/';
 import { ProductsService } from './services/products.service';
 import { Product } from './interfaces/products.interface';
 import { HttpExceptionFilter } from 'src/core/filters/http-exception.filters';
+import { JoiValidation } from '../core/pipes/joiValidation.pipe';
 
 @Controller('products')
 @UseFilters(new HttpExceptionFilter())
@@ -29,6 +31,7 @@ export class ProductsController {
   }
 
   @Post()
+  @UsePipes(new JoiValidation(CreateProductDto))
   createProduct(@Body() productDto: CreateProductDto): Product {
     return this.productsService.createProduct(productDto);
   }
