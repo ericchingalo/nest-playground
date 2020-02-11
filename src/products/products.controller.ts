@@ -9,15 +9,18 @@ import {
   UseFilters,
   UsePipes,
   ValidationPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { CreateProductDto, UpdateProductDto } from './dto/';
 import { ProductsService } from './services/products.service';
 import { Product } from './interfaces/products.interface';
 import { HttpExceptionFilter } from 'src/core/filters/http-exception.filters';
 import { CustomValidationPipe, ParseIntPipe } from 'src/core/pipes';
+import { AuthGuard } from '../core/guards/auth.guard';
 
 @Controller('products')
 @UseFilters(new HttpExceptionFilter())
+@UseGuards(AuthGuard)
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
