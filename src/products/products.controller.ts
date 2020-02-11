@@ -17,6 +17,8 @@ import { Product } from './interfaces/products.interface';
 import { HttpExceptionFilter } from 'src/core/filters/http-exception.filters';
 import { CustomValidationPipe, ParseIntPipe } from 'src/core/pipes';
 import { AuthGuard } from '../core/guards/auth.guard';
+import { RolesGuard } from '../core/guards/roles.guard';
+import { Roles } from 'src/core/decorators/roles.decorator';
 
 @Controller('products')
 @UseFilters(new HttpExceptionFilter())
@@ -51,6 +53,8 @@ export class ProductsController {
   }
 
   @Delete(':id')
+  @Roles('admin')
+  @UseGuards(RolesGuard)
   deleteProduct(@Param('id', new ParseIntPipe()) id): number {
     return this.productsService.deleteProduct(id);
   }
