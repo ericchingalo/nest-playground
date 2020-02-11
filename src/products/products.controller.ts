@@ -7,12 +7,14 @@ import {
   Put,
   Delete,
   UseFilters,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { CreateProductDto, UpdateProductDto } from './dto/';
 import { ProductsService } from './services/products.service';
 import { Product } from './interfaces/products.interface';
 import { HttpExceptionFilter } from 'src/core/filters/http-exception.filters';
-import { ValidationPipe, ParseIntPipe } from 'src/core/pipes';
+import { CustomValidationPipe, ParseIntPipe } from 'src/core/pipes';
 
 @Controller('products')
 @UseFilters(new HttpExceptionFilter())
@@ -31,15 +33,16 @@ export class ProductsController {
 
   @Post()
   createProduct(
-    @Body(new ValidationPipe()) productDto: CreateProductDto,
+    @Body(new CustomValidationPipe()) productDto: CreateProductDto,
   ): Product {
     return this.productsService.createProduct(productDto);
   }
 
   @Put(':id')
+  @UsePipes()
   updateProduct(
     @Param('id', new ParseIntPipe()) id: number,
-    @Body() productDto: UpdateProductDto,
+    @Body(new ValidationPipe({ transform: true })) productDto: UpdateProductDto,
   ): Product {
     return this.productsService.updateProduct(id, productDto);
   }
