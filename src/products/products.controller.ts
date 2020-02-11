@@ -7,14 +7,12 @@ import {
   Put,
   Delete,
   UseFilters,
-  UsePipes,
 } from '@nestjs/common';
 import { CreateProductDto, UpdateProductDto } from './dto/';
 import { ProductsService } from './services/products.service';
 import { Product } from './interfaces/products.interface';
 import { HttpExceptionFilter } from 'src/core/filters/http-exception.filters';
-import { JoiValidation } from '../core/pipes/joiValidation.pipe';
-import { ValidationPipe } from 'src/core/pipes/validation.pipe';
+import { ValidationPipe, ParseIntPipe } from 'src/core/pipes';
 
 @Controller('products')
 @UseFilters(new HttpExceptionFilter())
@@ -27,8 +25,8 @@ export class ProductsController {
   }
 
   @Get(':id')
-  findProductById(@Param('id') id: number): Product {
-    return this.productsService.findProduct(Number(id));
+  findProductById(@Param('id', new ParseIntPipe()) id: number): Product {
+    return this.productsService.findProduct(id);
   }
 
   @Post()
@@ -40,14 +38,14 @@ export class ProductsController {
 
   @Put(':id')
   updateProduct(
-    @Param('id') id: number,
+    @Param('id', new ParseIntPipe()) id: number,
     @Body() productDto: UpdateProductDto,
   ): Product {
-    return this.productsService.updateProduct(Number(id), productDto);
+    return this.productsService.updateProduct(id, productDto);
   }
 
   @Delete(':id')
-  deleteProduct(@Param('id') id: number): number {
-    return this.productsService.deleteProduct(Number(id));
+  deleteProduct(@Param('id', new ParseIntPipe()) id): number {
+    return this.productsService.deleteProduct(id);
   }
 }
