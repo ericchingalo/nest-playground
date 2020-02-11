@@ -30,11 +30,6 @@ export class RolesGuard implements CanActivate {
     const foundRole: string = _.find(userRoles, role =>
       _.includes(roles, role),
     );
-
-    console.log('Handler Roles:: ', roles);
-    console.log('User Roles:: ', userRoles);
-    console.log('Found Roles:: ', foundRole);
-
     return foundRole ? true : false;
   }
 }
