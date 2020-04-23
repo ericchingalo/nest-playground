@@ -6,7 +6,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   // to set global filter
   // app.useGlobalFilters(new HttpExceptionFilter());
-  app.setGlobalPrefix('api');
+  // app.setGlobalPrefix('api');
   await app.listen(3000);
 }
 bootstrap();
